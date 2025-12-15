@@ -1,0 +1,28 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 150px;
+
+  .text {
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-content);
+    text-align: center;
+  }
+}
+
+.kyc_btn {
+  width: 160px;
+}
+
+.auth_img {
+  width: 76px !important;
+  height: 61px !important;
+
+  image {
+    width: 76px !important;
+    height: 61px !important;
+  }
+}

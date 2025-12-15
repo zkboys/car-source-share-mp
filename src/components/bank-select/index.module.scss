@@ -1,0 +1,63 @@
+.root {
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--input-height, 40px);
+  font-size: var(--input-font-size, 14px);
+
+  .value {
+    flex: 1;
+    width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .placeholder {
+    color: var(--input-placeholder-color, #C9CDD4);
+  }
+
+  .icon {
+    color: #8491a0;
+  }
+}
+
+
+.top {
+  .title {
+    position: relative;
+    color: #1D2129;
+    text-align: center;
+    font-size: 15px;
+    padding: 16px;
+
+    .close {
+      color: #4e5969;
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 16px;
+    }
+  }
+}
+
+.input {
+  padding: 0 16px;
+}
+
+.list {
+  padding: 0 16px;
+}
+
+.item {
+  padding: 8px;
+  color: var(--color-content, #4E5969);
+  font-size: 13px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

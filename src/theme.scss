@@ -1,0 +1,54 @@
+// https://taroify.github.io/taroify.com/components/config-provider/
+:root, page {
+  --blue: #1D5CCC;
+  --red: #F53F3F;
+  --primary-color: #286fee;
+  --color-border: #E5E6EB;
+  --color-error: var(--red);
+  --color-content: #4E5969;
+  --color-title: #1D2129;
+  --color-divider: #F0F1F5;
+  --color-tab-active: #286FEE;
+
+  --color-primary: var(--primary-color);
+  --color-tip: #86909C;
+  --color-gray-background: #f8f9fa;
+  --color-disabled: #C9CDD4;
+  --color-line: #E0E0E0;
+  --color-light-blue: #F6F9FC;
+
+  --dialog-header-font-weight: 400;
+  --dialog-width: 270px;
+  --dialog-has-title-message-color: #4E5969;
+  --dialog-border-radius: 8px;
+  --dialog-header-padding-top: 20px;
+
+  --input-height: 40px;
+  --input-height-lg: 40px;
+  --input-font-size: 16px;
+  --input-font-size-lg: 16px;
+  --input-placeholder-color: #C9CDD4;
+  --input-disabled-value-color: #8491A0;
+
+  --search-padding: 0;
+  --search-field-padding: 0;
+  --search-content-background-color: #f7f9fd;
+  --search-content-border-radius: 8px;
+  --button-primary-background-color: #165DDB;
+  --button-border-radius-max: 12px;
+  --button-font-size-medium: 16px;
+  --button-border-radius: 12px;
+  --button-height-mini: 40px;
+  --button-font-size-mini: 17px;
+
+  --tab-active-color: var(--color-tab-active);
+  --tab-color: var(--color-title);
+  --tabs-wrap-height: 36px;
+  --tabs-line-height: 2px;
+  --tabs-line-width: 17px;
+  --tabs-line-border-radius: 2px;
+  --tabs-line-background-color: var(--color-tab-active);
+  --tab-padding: 16px;
+
+  --dialog-message-padding: 20px 16px;
+}
