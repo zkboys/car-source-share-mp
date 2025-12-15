@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 32px 0 32px;
+  padding: 8px 16px 0 16px;
   box-sizing: border-box;
   width: 100%;
 
@@ -11,24 +11,24 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding-right: 32px;
+    padding-right: 16px;
   }
 
   &__logo {
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: #fff;
   }
 
   &__title {
-    margin-left: 16px;
+    margin-left: 8px;
     color: #fff;
-    font-size: 36px;
+    font-size: 18px;
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 500px;
+    max-width: 250px;
   }
 }

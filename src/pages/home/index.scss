@@ -9,12 +9,10 @@
     width: 100%;
     z-index: 999;
     background: #3689f5;
-    padding-top: constant(safe-area-inset-top);
-    padding-top: env(safe-area-inset-top);
   }
 
   &__content {
-    padding: 200px 16px 16px 16px;
+    padding: 8px;
     box-sizing: border-box;
     min-height: 100vh;
     padding-bottom: constant(safe-area-inset-bottom);
@@ -26,17 +24,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 200px;
+    padding-top: 100px;
   }
 
   &__empty-text {
-    font-size: 32px;
+    font-size: 16px;
     color: #fff;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
   }
 
   &__empty-tip {
-    font-size: 26px;
+    font-size: 13px;
     color: rgba(255, 255, 255, 0.7);
   }
 }

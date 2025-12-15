@@ -9,7 +9,7 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 88px;
+    height: 44px;
     padding-top: constant(safe-area-inset-top);
     padding-top: env(safe-area-inset-top);
     background: #3689f5;
@@ -20,15 +20,15 @@
   }
 
   &__nav-back {
-    width: 88px;
-    height: 88px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   &__nav-arrow {
-    font-size: 48px;
+    font-size: 24px;
     color: #fff;
     font-weight: bold;
   }
@@ -36,25 +36,25 @@
   &__nav-title {
     flex: 1;
     text-align: center;
-    font-size: 32px;
+    font-size: 16px;
     color: #fff;
     font-weight: 500;
   }
 
   &__nav-placeholder {
-    width: 88px;
+    width: 44px;
   }
 
   &__scroll {
     height: 100vh;
-    padding-top: calc(88px + constant(safe-area-inset-top));
-    padding-top: calc(88px + env(safe-area-inset-top));
+    padding-top: calc(44px + constant(safe-area-inset-top));
+    padding-top: calc(44px + env(safe-area-inset-top));
   }
 
   &__images {
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 200px;
   }
 
   &__swiper {
@@ -75,48 +75,48 @@
     justify-content: center;
     background: #f5f5f5;
     color: #999;
-    font-size: 28px;
+    font-size: 14px;
   }
 
   &__indicator {
     position: absolute;
-    bottom: 16px;
+    bottom: 8px;
     left: 50%;
     transform: translateX(-50%);
     color: #fff;
-    font-size: 24px;
+    font-size: 12px;
     background: rgba(0, 0, 0, 0.5);
-    padding: 8px 20px;
-    border-radius: 20px;
+    padding: 4px 10px;
+    border-radius: 10px;
   }
 
   &__section {
     background: #fff;
-    margin-bottom: 16px;
-    padding: 32px;
+    margin-bottom: 8px;
+    padding: 16px;
   }
 
   &__title {
-    font-size: 32px;
+    font-size: 16px;
     font-weight: bold;
     color: #333;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     display: block;
     line-height: 1.4;
   }
 
   &__section-title {
-    font-size: 28px;
+    font-size: 14px;
     font-weight: bold;
     color: #333;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     display: block;
   }
 
   &__item {
     display: flex;
     align-items: flex-start;
-    padding: 16px 0;
+    padding: 8px 0;
     border-bottom: 1px solid #f0f0f0;
 
     &:last-child {
@@ -125,16 +125,16 @@
   }
 
   &__label {
-    flex: 0 0 160px;
-    font-size: 26px;
+    flex: 0 0 80px;
+    font-size: 13px;
     color: #666;
     text-align: right;
-    padding-right: 24px;
+    padding-right: 12px;
   }
 
   &__value {
     flex: 1;
-    font-size: 26px;
+    font-size: 13px;
     color: #333;
     font-weight: 500;
 
@@ -145,19 +145,19 @@
 
   &__config {
     background: #f5f5f5;
-    padding: 24px;
-    border-radius: 12px;
+    padding: 12px;
+    border-radius: 6px;
   }
 
   &__config-text {
-    font-size: 26px;
+    font-size: 13px;
     color: #666;
     line-height: 1.6;
     white-space: pre-wrap;
   }
 
   &__footer-placeholder {
-    height: 200px;
+    height: 100px;
   }
 
   &__footer {
@@ -166,22 +166,22 @@
     left: 0;
     right: 0;
     background: #fff;
-    padding: 16px 32px;
-    padding-bottom: calc(16px + constant(safe-area-inset-bottom));
-    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    padding: 8px 16px;
+    padding-bottom: calc(8px + constant(safe-area-inset-bottom));
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
     display: flex;
-    gap: 24px;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+    gap: 12px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
   }
 
   &__btn {
     flex: 1;
-    height: 80px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 40px;
-    font-size: 28px;
+    border-radius: 20px;
+    font-size: 14px;
 
     &--primary {
       background: #3689f5;

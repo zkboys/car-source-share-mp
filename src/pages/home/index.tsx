@@ -1,10 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, ScrollView, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { CarSource, Company, DropdownSelectItemType, DropdownValueType } from '@/types/car-source';
 import { fetchCompany, fetchCarSourceList } from '@/api/car-source';
 import { Header, CarCard, DropdownSelect } from './components';
 import './index.scss';
+
+// 获取系统信息
+const systemInfo = Taro.getSystemInfoSync();
+const statusBarHeight = systemInfo.statusBarHeight || 20;
 
 // 提取字符串中的数字，用于价格排序
 function extractNumber(str: string): number {
@@ -194,9 +198,15 @@ export default function Home() {
     });
   };
 
+  // 计算顶部高度（状态栏 + header + 筛选栏）
+  const topHeight = useMemo(() => {
+    // 状态栏高度 + header高度(约36px) + 筛选栏高度(40px)
+    return statusBarHeight + 36 + 40;
+  }, []);
+
   return (
     <View className="car-home">
-      <View className="car-home__top">
+      <View className="car-home__top" style={{ paddingTop: `${statusBarHeight}px` }}>
         <Header company={company} />
         <DropdownSelect
           value={dropdownValue}
@@ -207,6 +217,7 @@ export default function Home() {
 
       <ScrollView
         className="car-home__content"
+        style={{ paddingTop: `${topHeight + 8}px` }}
         scrollY
         enhanced
         showScrollbar={false}
