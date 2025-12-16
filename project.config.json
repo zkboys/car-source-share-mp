@@ -1,24 +1,42 @@
 {
   "miniprogramRoot": "dist/",
-  "projectname": "cogo-agent-mp",
-  "description": "代理商小程序",
+  "projectname": "car-source-share-mp",
+  "description": "车源分享",
   "appid": "wx3eb58a1828f9ee08",
   "setting": {
     "urlCheck": true,
     "es6": false,
     "enhance": false,
-    "compileHotReLoad": false,
     "postcss": false,
+    "preloadBackgroundData": false,
     "minified": false,
-    "ignoreUploadUnusedFiles": true,
+    "newFeature": false,
+    "coverView": false,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": false,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": false,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
-    "coverView": false,
-    "showShadowRootInWxmlPanel": false,
-    "packNpmRelationList": []
+    "enableEngineNative": false,
+    "useIsolateContext": true,
+    "userConfirmedBundleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "showES6CompileOption": false
   },
   "compileType": "miniprogram",
   "libVersion": "3.8.9",
@@ -27,9 +45,9 @@
     "ignore": [],
     "include": []
   },
-  "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  }
+  },
+  "condition": {}
 }
