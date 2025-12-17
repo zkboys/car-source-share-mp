@@ -2,7 +2,7 @@ import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { CarSource } from '@/types/car-source';
 import { ContactDialog } from '../contact-dialog';
-import './index.scss';
+import s from './index.module.scss';
 
 export type CarCardProps = {
   data: CarSource;
@@ -40,62 +40,62 @@ export function CarCard(props: CarCardProps) {
   };
 
   return (
-    <View className="car-card">
-      <View className="car-card__top" onClick={handleToDetail}>
-        <View className="car-card__image-wrap">
+    <View className={s.carCard}>
+      <View className={s.top} onClick={handleToDetail}>
+        <View className={s.imageWrap}>
           {carPhoto?.length ? (
             <Swiper
-              className="car-card__swiper"
+              className={s.swiper}
               indicatorDots={false}
               autoplay={false}
               circular
             >
               {carPhoto.map((url, index) => (
                 <SwiperItem key={url} onClick={(e) => { e.stopPropagation(); handleImageClick(index); }}>
-                  <Image src={url} className="car-card__image" mode="aspectFill" />
+                  <Image src={url} className={s.image} mode="aspectFill" />
                 </SwiperItem>
               ))}
             </Swiper>
           ) : (
-            <View className="car-card__no-photo">暂无图片</View>
+            <View className={s.noPhoto}>暂无图片</View>
           )}
           {carPhoto && carPhoto.length > 1 && (
-            <View className="car-card__indicator">{carPhoto.length}张</View>
+            <View className={s.indicator}>{carPhoto.length}张</View>
           )}
         </View>
-        <View className="car-card__title-wrap">
-          <Text className="car-card__title">{title || ''}</Text>
+        <View className={s.titleWrap}>
+          <Text className={s.title}>{title || ''}</Text>
         </View>
       </View>
 
-      <View className="car-card__price-info" onClick={handleToDetail}>
+      <View className={s.priceInfo} onClick={handleToDetail}>
         {[
           { label: '指导价', value: guidePrice },
           { label: '出口方式', value: exportMethod },
           { label: '出口价', value: exportPrice },
         ].map((item) => (
-          <View key={item.label} className="car-card__price-item">
-            <Text className="car-card__price-label">{item.label}</Text>
-            <Text className="car-card__price-value">{item.value || '-'}</Text>
+          <View key={item.label} className={s.priceItem}>
+            <Text className={s.priceLabel}>{item.label}</Text>
+            <Text className={s.priceValue}>{item.value || '-'}</Text>
           </View>
         ))}
       </View>
 
-      <View className="car-card__details" onClick={handleToDetail}>
+      <View className={s.details} onClick={handleToDetail}>
         {[color, deliveryType, deliveryCity, insuranceType].map((item, index) => (
-          <View key={index} className="car-card__detail-item">
+          <View key={index} className={s.detailItem}>
             <Text>{item || '-'}</Text>
           </View>
         ))}
       </View>
 
       <ContactDialog contact={contact} number={number} weChat={weChat}>
-        <View className="car-card__contact">
+        <View className={s.contact}>
           <Image
-            className="car-card__wechat-icon"
+            className={s.wechatIcon}
             src="https://cdn-icons-png.flaticon.com/512/124/124034.png"
           />
-          <Text className="car-card__contact-text">加微信咨询</Text>
+          <Text className={s.contactText}>加微信咨询</Text>
         </View>
       </ContactDialog>
     </View>

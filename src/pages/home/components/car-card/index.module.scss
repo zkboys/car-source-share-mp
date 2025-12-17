@@ -1,0 +1,149 @@
+.carCard {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  margin-bottom: 8px;
+}
+
+.top {
+  display: flex;
+  padding: 8px;
+}
+
+.imageWrap {
+  flex: 0 0 106px;
+  width: 106px;
+  height: 80px;
+  margin-right: 8px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+}
+
+.noPhoto {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 12px;
+  background: #f5f5f5;
+}
+
+.indicator {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.titleWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.priceInfo {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 8px;
+  padding: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.priceItem {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid #f0f0f0;
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.priceLabel {
+  font-size: 11px;
+  color: #999;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.priceValue {
+  font-size: 13px;
+  font-weight: 500;
+  color: #fa6400;
+}
+
+.details {
+  margin: 0 8px 8px 8px;
+  font-size: 11px;
+  color: #666;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.detailItem {
+  background-color: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.wechatIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+}
+
+.contactText {
+  font-size: 14px;
+  font-weight: 500;
+  color: #07c160;
+}

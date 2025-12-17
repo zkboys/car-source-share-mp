@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, ScrollView, Text } from '@tarojs/components';
+import {useCallback, useEffect, useMemo, useState} from 'react';
+import {ScrollView, Text, View} from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { CarSource, Company, DropdownSelectItemType, DropdownValueType } from '@/types/car-source';
-import { fetchCompany, fetchCarSourceList } from '@/api/car-source';
-import { Header, CarCard, DropdownSelect } from './components';
-import './index.scss';
+import {CarSource, Company, DropdownSelectItemType, DropdownValueType} from '@/types/car-source';
+import {fetchCarSourceList, fetchCompany} from '@/api/car-source';
+import {CarCard, DropdownSelect, Header} from './components';
+import {PageContent} from "@rc-lib/mp";
+import s from './index.module.scss';
 
 // 获取系统信息
 const systemInfo = Taro.getSystemInfoSync();
@@ -34,28 +35,28 @@ const initItems: DropdownSelectItemType[] = [
     key: 'sorter',
     title: '排序',
     children: [
-      { key: 'all', title: '默认排序' },
-      { key: 'desc', title: '价格最高' },
-      { key: 'asc', title: '价格最低' },
+      {key: 'all', title: '默认排序'},
+      {key: 'desc', title: '价格最高'},
+      {key: 'asc', title: '价格最低'},
     ],
   },
   {
     key: 'brand',
     title: '品牌',
     multiple: true,
-    children: [{ key: 'all', title: '全部品牌' }],
+    children: [{key: 'all', title: '全部品牌'}],
   },
   {
     key: 'source',
     title: '车源',
     multiple: true,
-    children: [{ key: 'all', title: '全部车源' }],
+    children: [{key: 'all', title: '全部车源'}],
   },
   {
     key: 'deliveryType',
     title: '提车类型',
     multiple: true,
-    children: [{ key: 'all', title: '全部类型' }],
+    children: [{key: 'all', title: '全部类型'}],
   },
 ];
 
@@ -79,7 +80,7 @@ export default function Home() {
     const deliveryTypeList: string[] = [];
 
     data.forEach((item) => {
-      const { brand, deliveryCity, deliveryType } = item;
+      const {brand, deliveryCity, deliveryType} = item;
       if (brand && !brandList.includes(brand)) {
         brandList.push(brand);
       }
@@ -98,18 +99,18 @@ export default function Home() {
       const deliveryTypeItems = newItems.find((it) => it.key === 'deliveryType')!;
 
       brandItems.children = [
-        { key: 'all', title: '全部品牌' },
-        ...brandList.map((b) => ({ key: b, title: b })),
+        {key: 'all', title: '全部品牌'},
+        ...brandList.map((b) => ({key: b, title: b})),
       ];
 
       sourceItems.children = [
-        { key: 'all', title: '全部车源' },
-        ...sourceList.map((s) => ({ key: s, title: s })),
+        {key: 'all', title: '全部车源'},
+        ...sourceList.map((s) => ({key: s, title: s})),
       ];
 
       deliveryTypeItems.children = [
-        { key: 'all', title: '全部类型' },
-        ...deliveryTypeList.map((s) => ({ key: s, title: s })),
+        {key: 'all', title: '全部类型'},
+        ...deliveryTypeList.map((s) => ({key: s, title: s})),
       ];
 
       return newItems;
@@ -118,7 +119,7 @@ export default function Home() {
 
   // 基于查询条件过滤数据
   useEffect(() => {
-    const { sorter, brand, source, deliveryType } = dropdownValue;
+    const {sorter, brand, source, deliveryType} = dropdownValue;
 
     const nextDataSource = originDataSource.filter((item: CarSource) => {
       const isBrand = brand.includes('all')
@@ -162,11 +163,11 @@ export default function Home() {
     const loadData = async () => {
       try {
         setLoading(true);
-        Taro.showLoading({ title: '加载中...' });
+        Taro.showLoading({title: '加载中...'});
 
         const [companyData, carList] = await Promise.all([
-          fetchCompany({ withLoading: false }),
-          fetchCarSourceList({ withLoading: false }),
+          fetchCompany({withLoading: false}),
+          fetchCarSourceList({withLoading: false}),
         ]);
 
         setCompany(companyData);
@@ -180,7 +181,7 @@ export default function Home() {
         getItems(processedData);
       } catch (error) {
         console.error('加载数据失败:', error);
-        Taro.showToast({ title: '加载失败', icon: 'error' });
+        Taro.showToast({title: '加载失败', icon: 'error'});
       } finally {
         setLoading(false);
         Taro.hideLoading();
@@ -205,9 +206,12 @@ export default function Home() {
   }, []);
 
   return (
-    <View className="car-home">
-      <View className="car-home__top" style={{ paddingTop: `${statusBarHeight}px` }}>
-        <Header company={company} />
+    <PageContent
+      className={s.carHome}
+      header={<Header company={company}/>}
+      transparentHeader
+    >
+      <View className={s.top}>
         <DropdownSelect
           value={dropdownValue}
           onChange={(value) => setDropdownValue(value as DropdownValueType)}
@@ -216,16 +220,16 @@ export default function Home() {
       </View>
 
       <ScrollView
-        className="car-home__content"
-        style={{ paddingTop: `${topHeight + 8}px` }}
+        className={s.content}
+        style={{paddingTop: `${topHeight + 8}px`}}
         scrollY
         enhanced
         showScrollbar={false}
       >
         {!loading && dataSource.length === 0 ? (
-          <View className="car-home__empty">
-            <Text className="car-home__empty-text">暂无数据</Text>
-            <Text className="car-home__empty-tip">更换筛选条件试试</Text>
+          <View className={s.empty}>
+            <Text className={s.emptyText}>暂无数据</Text>
+            <Text className={s.emptyTip}>更换筛选条件试试</Text>
           </View>
         ) : (
           dataSource.map((item) => (
@@ -237,6 +241,6 @@ export default function Home() {
           ))
         )}
       </ScrollView>
-    </View>
+    </PageContent>
   );
 }

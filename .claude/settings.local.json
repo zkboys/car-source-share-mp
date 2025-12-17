@@ -1,11 +1,12 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(mv:*)"
+    ]
+  },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "playwright"
-  ],
-  "permissions": {
-    "allow": [
-      "Bash(tree:*)"
-    ]
-  }
+  ]
 }

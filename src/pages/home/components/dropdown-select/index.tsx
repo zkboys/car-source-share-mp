@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from '@tarojs/components';
 import { useState } from 'react';
 import { DropdownSelectItemType } from '@/types/car-source';
-import './index.scss';
+import s from './index.module.scss';
 
 export type DropdownSelectValue = Record<string, string | string[]>;
 
@@ -71,9 +71,16 @@ export function DropdownSelect(props: DropdownSelectProps) {
     return title;
   };
 
+  const getTabClassName = (isActive: boolean, hasValue: boolean) => {
+    if (isActive && hasValue) return s.tabActiveHasValue;
+    if (isActive) return s.tabActive;
+    if (hasValue) return s.tabHasValue;
+    return s.tab;
+  };
+
   return (
-    <View className={`dropdown-select ${className || ''}`}>
-      <View className="dropdown-select__header">
+    <View className={`${s.dropdownSelect} ${className || ''}`}>
+      <View className={s.header}>
         {items.map((item) => {
           const isActive = activeKey === item.key;
           const hasValue = (() => {
@@ -87,20 +94,20 @@ export function DropdownSelect(props: DropdownSelectProps) {
           return (
             <View
               key={item.key}
-              className={`dropdown-select__tab ${isActive ? 'dropdown-select__tab--active' : ''} ${hasValue ? 'dropdown-select__tab--has-value' : ''}`}
+              className={getTabClassName(isActive, hasValue)}
               onClick={() => handleItemClick(item.key)}
             >
-              <Text className="dropdown-select__tab-text">{getDisplayTitle(item)}</Text>
-              <View className={`dropdown-select__arrow ${isActive ? 'dropdown-select__arrow--up' : ''}`} />
+              <Text className={s.tabText}>{getDisplayTitle(item)}</Text>
+              <View className={isActive ? s.arrowUp : s.arrow} />
             </View>
           );
         })}
       </View>
 
       {activeKey && (
-        <View className="dropdown-select__overlay" onClick={() => setActiveKey(null)}>
-          <View className="dropdown-select__dropdown" onClick={(e) => e.stopPropagation()}>
-            <ScrollView scrollY className="dropdown-select__scroll">
+        <View className={s.overlay} onClick={() => setActiveKey(null)}>
+          <View className={s.dropdown} onClick={(e) => e.stopPropagation()}>
+            <ScrollView scrollY className={s.scroll}>
               {items
                 .find((item) => item.key === activeKey)
                 ?.children?.map((option) => {
@@ -113,11 +120,11 @@ export function DropdownSelect(props: DropdownSelectProps) {
                   return (
                     <View
                       key={option.key}
-                      className={`dropdown-select__option ${isSelected ? 'dropdown-select__option--selected' : ''}`}
+                      className={isSelected ? s.optionSelected : s.option}
                       onClick={() => handleOptionClick(currentItem!, option.key)}
                     >
                       <Text>{option.title}</Text>
-                      {isSelected && <View className="dropdown-select__check" />}
+                      {isSelected && <View className={s.check} />}
                     </View>
                   );
                 })}

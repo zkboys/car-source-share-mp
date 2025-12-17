@@ -4,7 +4,7 @@ import Taro, { useRouter } from '@tarojs/taro';
 import { CarSource } from '@/types/car-source';
 import { fetchCarSourceDetail } from '@/api/car-source';
 import { ContactDialog } from '../home/components/contact-dialog';
-import './index.scss';
+import styles from './index.module.scss';
 
 // 处理图片数据
 function processCarPhoto(carPhoto: any): string[] {
@@ -72,23 +72,23 @@ export default function Detail() {
   const carPhoto = data?.carPhoto || [];
 
   return (
-    <View className="car-detail">
+    <View className={styles.carDetail}>
       {/* 导航栏 */}
-      <View className="car-detail__nav">
-        <View className="car-detail__nav-back" onClick={handleBack}>
-          <Text className="car-detail__nav-arrow">‹</Text>
+      <View className={styles.nav}>
+        <View className={styles.navBack} onClick={handleBack}>
+          <Text className={styles.navArrow}>‹</Text>
         </View>
-        <Text className="car-detail__nav-title">车辆详情</Text>
-        <View className="car-detail__nav-placeholder" />
+        <Text className={styles.navTitle}>车辆详情</Text>
+        <View className={styles.navPlaceholder} />
       </View>
 
       {data && (
-        <ScrollView className="car-detail__scroll" scrollY enhanced showScrollbar={false}>
+        <ScrollView className={styles.scroll} scrollY enhanced showScrollbar={false}>
           {/* 图片轮播 */}
-          <View className="car-detail__images">
+          <View className={styles.images}>
             {carPhoto.length > 0 ? (
               <Swiper
-                className="car-detail__swiper"
+                className={styles.swiper}
                 indicatorDots={false}
                 autoplay={false}
                 circular
@@ -98,7 +98,7 @@ export default function Detail() {
                   <SwiperItem key={url}>
                     <Image
                       src={url}
-                      className="car-detail__image"
+                      className={styles.image}
                       mode="aspectFill"
                       onClick={() => handleImageClick(index)}
                     />
@@ -106,81 +106,81 @@ export default function Detail() {
                 ))}
               </Swiper>
             ) : (
-              <View className="car-detail__no-photo">暂无图片</View>
+              <View className={styles.noPhoto}>暂无图片</View>
             )}
             {carPhoto.length > 1 && (
-              <View className="car-detail__indicator">
+              <View className={styles.indicator}>
                 {currentIndex + 1} / {carPhoto.length}
               </View>
             )}
           </View>
 
           {/* 基本信息 */}
-          <View className="car-detail__section">
-            <Text className="car-detail__title">{data.title}</Text>
+          <View className={styles.section}>
+            <Text className={styles.title}>{data.title}</Text>
 
-            <View className="car-detail__item">
-              <Text className="car-detail__label">提车类型</Text>
-              <Text className="car-detail__value">{data.deliveryType || '-'}</Text>
+            <View className={styles.item}>
+              <Text className={styles.label}>提车类型</Text>
+              <Text className={styles.value}>{data.deliveryType || '-'}</Text>
             </View>
-            <View className="car-detail__item">
-              <Text className="car-detail__label">颜色</Text>
-              <Text className="car-detail__value">{data.color || '-'}</Text>
+            <View className={styles.item}>
+              <Text className={styles.label}>颜色</Text>
+              <Text className={styles.value}>{data.color || '-'}</Text>
             </View>
-            <View className="car-detail__item">
-              <Text className="car-detail__label">指导价</Text>
-              <Text className="car-detail__value">{data.guidePrice || '-'}</Text>
+            <View className={styles.item}>
+              <Text className={styles.label}>指导价</Text>
+              <Text className={styles.value}>{data.guidePrice || '-'}</Text>
             </View>
-            <View className="car-detail__item">
-              <Text className="car-detail__label">出口价</Text>
-              <Text className="car-detail__value car-detail__value--highlight">
+            <View className={styles.item}>
+              <Text className={styles.label}>出口价</Text>
+              <Text className={styles.valueHighlight}>
                 {data.exportPrice || '-'}
               </Text>
             </View>
-            <View className="car-detail__item">
-              <Text className="car-detail__label">出口方式</Text>
-              <Text className="car-detail__value">{data.exportMethod || '-'}</Text>
+            <View className={styles.item}>
+              <Text className={styles.label}>出口方式</Text>
+              <Text className={styles.value}>{data.exportMethod || '-'}</Text>
             </View>
           </View>
 
           {/* 车辆信息 */}
-          <View className="car-detail__section">
-            <Text className="car-detail__section-title">车辆信息</Text>
+          <View className={styles.section}>
+            <Text className={styles.sectionTitle}>车辆信息</Text>
 
-            <View className="car-detail__item">
-              <Text className="car-detail__label">车架号</Text>
-              <Text className="car-detail__value">{maskVIN(data.VIN)}</Text>
+            <View className={styles.item}>
+              <Text className={styles.label}>车架号</Text>
+              <Text className={styles.value}>{maskVIN(data.VIN)}</Text>
             </View>
-            <View className="car-detail__item">
-              <Text className="car-detail__label">提车城市</Text>
-              <Text className="car-detail__value">{data.deliveryCity || '-'}</Text>
+            <View className={styles.item}>
+              <Text className={styles.label}>提车城市</Text>
+              <Text className={styles.value}>{data.deliveryCity || '-'}</Text>
             </View>
-            <View className="car-detail__item">
-              <Text className="car-detail__label">保险类型</Text>
-              <Text className="car-detail__value">{data.insuranceType || '-'}</Text>
+            <View className={styles.item}>
+              <Text className={styles.label}>保险类型</Text>
+              <Text className={styles.value}>{data.insuranceType || '-'}</Text>
             </View>
           </View>
 
           {/* 车辆配置 */}
           {data.vehicleConfiguration && (
-            <View className="car-detail__section">
-              <Text className="car-detail__section-title">配置特点</Text>
-              <View className="car-detail__config">
-                <Text className="car-detail__config-text">{data.vehicleConfiguration}</Text>
+            <View className={styles.section}>
+              <Text className={styles.sectionTitle}>配置特点</Text>
+              <View className={styles.config}>
+                <Text className={styles.configText}>{data.vehicleConfiguration}</Text>
               </View>
             </View>
           )}
 
           {/* 底部占位 */}
-          <View className="car-detail__footer-placeholder" />
+          <View className={styles.footerPlaceholder} />
         </ScrollView>
       )}
 
       {/* 底部按钮 */}
-      <View className="car-detail__footer">
+      <View className={styles.footer}>
         {data?.WeChatQRcode && (
           <ContactDialog weChat={data.WeChatQRcode}>
-            <View className="car-detail__btn car-detail__btn--secondary">
+            <View className={styles.btnSecondary}>
               <Text>关注了解更多</Text>
             </View>
           </ContactDialog>
@@ -191,7 +191,7 @@ export default function Detail() {
           number={data?.number}
           weChat={data?.weChat}
         >
-          <View className="car-detail__btn car-detail__btn--primary">
+          <View className={styles.btnPrimary}>
             <Text>联系供应商</Text>
           </View>
         </ContactDialog>

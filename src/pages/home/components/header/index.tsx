@@ -1,6 +1,6 @@
 import { View, Image, Text } from '@tarojs/components';
 import { Company } from '@/types/car-source';
-import './index.scss';
+import s from './index.module.scss';
 
 export type HeaderProps = {
   company?: Company;
@@ -10,12 +10,12 @@ export function Header(props: HeaderProps) {
   const { company } = props;
 
   return (
-    <View className="car-header">
-      <View className="car-header__info">
+    <View className={s.header}>
+      <View className={s.info}>
         {company?.logo && (
-          <Image className="car-header__logo" src={company.logo} mode="aspectFill" />
+          <Image className={s.logo} src={company.logo} mode="aspectFill" />
         )}
-        <Text className="car-header__title">{company?.companyName || ''}</Text>
+        <Text className={s.title}>{company?.companyName || ' '}</Text>
       </View>
     </View>
   );

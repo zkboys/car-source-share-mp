@@ -1,7 +1,7 @@
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { ReactNode, useState } from 'react';
-import './index.scss';
+import s from './index.module.scss';
 
 export type ContactDialogProps = {
   className?: string;
@@ -42,41 +42,41 @@ export function ContactDialog(props: ContactDialogProps) {
 
   return (
     <>
-      <View className={`contact-trigger ${className || ''}`} onClick={handleClick}>
+      <View className={`${s.trigger} ${className || ''}`} onClick={handleClick}>
         {children}
       </View>
 
       {visible && (
-        <View className="contact-dialog__overlay" onClick={handleClose}>
-          <View className="contact-dialog" onClick={(e) => e.stopPropagation()}>
-            <View className="contact-dialog__header">
-              <Text className="contact-dialog__title">联系方式</Text>
-              <View className="contact-dialog__close" onClick={handleClose}>
+        <View className={s.overlay} onClick={handleClose}>
+          <View className={s.dialog} onClick={(e) => e.stopPropagation()}>
+            <View className={s.header}>
+              <Text className={s.title}>联系方式</Text>
+              <View className={s.close} onClick={handleClose}>
                 ✕
               </View>
             </View>
-            <View className="contact-dialog__content">
+            <View className={s.content}>
               {(contact || number) && (
-                <View className="contact-dialog__phone" onClick={handleCall}>
-                  <Text className="contact-dialog__contact-name">{contact || '联系人'}</Text>
-                  <Text className="contact-dialog__number">{number}</Text>
+                <View className={s.phone} onClick={handleCall}>
+                  <Text className={s.contactName}>{contact || '联系人'}</Text>
+                  <Text className={s.number}>{number}</Text>
                 </View>
               )}
               {weChat && (
-                <View className="contact-dialog__wechat">
-                  <Text className="contact-dialog__label">微信二维码</Text>
+                <View className={s.wechat}>
+                  <Text className={s.label}>微信二维码</Text>
                   <Image
-                    className="contact-dialog__qrcode"
+                    className={s.qrcode}
                     src={weChat}
                     mode="aspectFit"
                     onClick={handlePreviewImage}
                   />
-                  <Text className="contact-dialog__tip">长按识别或点击放大</Text>
+                  <Text className={s.tip}>长按识别或点击放大</Text>
                 </View>
               )}
             </View>
-            <View className="contact-dialog__footer">
-              <View className="contact-dialog__btn" onClick={handleClose}>
+            <View className={s.footer}>
+              <View className={s.btn} onClick={handleClose}>
                 我知道了
               </View>
             </View>
