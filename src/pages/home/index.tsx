@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ScrollView, Text, View } from '@tarojs/components';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
+import { Text, View, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { CarSource, Company, DropdownSelectItemType, DropdownValueType } from '@/types/car-source';
 import { fetchCarSourceList, fetchCompany } from '@/api';
@@ -192,18 +192,62 @@ export default function Home() {
   }, [getItems]);
 
   // 图片点击预览
-  const handleImageClick = (images: string[], index: number) => {
+  const handleImageClick = useCallback((images: string[], index: number) => {
     Taro.previewImage({
       urls: images,
       current: images[index],
     });
-  };
+  }, []);
 
   // 计算顶部高度（状态栏 + header + 筛选栏）
   const topHeight = useMemo(() => {
     // 状态栏高度 + header高度(约36px) + 筛选栏高度(40px)
     return statusBarHeight + 36 + 40;
   }, []);
+
+  // 计算可视区域高度
+  const screenHeight = useMemo(() => {
+    const systemInfo = Taro.getSystemInfoSync();
+    return systemInfo.windowHeight || 667;
+  }, []);
+
+  // 虚拟滚动相关状态
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 10 });
+  const scrollTopRef = useRef(0);
+  const itemHeight = 200; // 每个卡片的大概高度
+  const overscan = 3; // 预渲染的额外项数
+
+  // 计算可见范围
+  const calculateVisibleRange = useCallback((scrollTop: number) => {
+    const containerHeight = screenHeight - topHeight - 8;
+    const start = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
+    const visibleCount = Math.ceil(containerHeight / itemHeight);
+    const end = Math.min(dataSource.length, start + visibleCount + overscan * 2);
+    setVisibleRange({ start, end });
+  }, [screenHeight, topHeight, dataSource.length]);
+
+  // 处理滚动事件
+  const handleScroll = useCallback((e: any) => {
+    const scrollTop = e.detail.scrollTop;
+    scrollTopRef.current = scrollTop;
+    calculateVisibleRange(scrollTop);
+  }, [calculateVisibleRange]);
+
+  // 初始化可见范围
+  useEffect(() => {
+    calculateVisibleRange(0);
+  }, [calculateVisibleRange, dataSource.length]);
+
+  // 获取可见的列表项
+  const visibleItems = useMemo(() => {
+    return dataSource.slice(visibleRange.start, visibleRange.end);
+  }, [dataSource, visibleRange]);
+
+  // 计算顶部占位高度
+  const topPlaceholderHeight = visibleRange.start * itemHeight;
+  
+  // 计算底部占位高度
+  const bottomPlaceholderHeight = (dataSource.length - visibleRange.end) * itemHeight;
 
   return (
     <PageContent className={s.carHome}>
@@ -219,10 +263,14 @@ export default function Home() {
 
       <ScrollView
         className={s.content}
-        style={{ paddingTop: `${topHeight + 8}px` }}
+        style={{ 
+          paddingTop: `${topHeight + 8}px`,
+          height: `${screenHeight - topHeight - 8}px`
+        }}
         scrollY
         enhanced
         showScrollbar={false}
+        onScroll={handleScroll}
       >
         {!loading && dataSource.length === 0 ? (
           <View className={s.empty}>
@@ -230,13 +278,25 @@ export default function Home() {
             <Text className={s.emptyTip}>更换筛选条件试试</Text>
           </View>
         ) : (
-          dataSource.map((item) => (
-            <CarCard
-              key={item.id}
-              data={item}
-              onImageClick={handleImageClick}
-            />
-          ))
+          <View>
+            {/* 顶部占位 */}
+            {topPlaceholderHeight > 0 && (
+              <View style={{ height: `${topPlaceholderHeight}px` }} />
+            )}
+            {/* 可见的列表项 */}
+            {visibleItems.map((item) => (
+              <View key={item.id} style={{ marginBottom: '8px', padding: '0 8px' }}>
+                <CarCard
+                  data={item}
+                  onImageClick={handleImageClick}
+                />
+              </View>
+            ))}
+            {/* 底部占位 */}
+            {bottomPlaceholderHeight > 0 && (
+              <View style={{ height: `${bottomPlaceholderHeight}px` }} />
+            )}
+          </View>
         )}
       </ScrollView>
     </PageContent>
