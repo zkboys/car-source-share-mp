@@ -1,6 +1,6 @@
 import config from '@/config';
-import {toLogin} from '@/commons/index';
-import {Ajax, getToken, isLogin, uuid} from '@rc-lib/mp';
+import { getCompanyId, toLogin } from '@/commons/index';
+import { Ajax, getToken, isLogin, uuid } from '@rc-lib/mp';
 
 export const TOKEN_KEY = 'market-AuthCode';
 
@@ -9,6 +9,8 @@ const ajax = new Ajax({
   timeout: config.timeout,
   beforeRequest: (cfg, options: any) => {
     if (!cfg.header) cfg.header = {};
+
+    cfg.header['x-company-id'] = getCompanyId();
 
     // 后端token
     cfg.header[TOKEN_KEY] = getToken();
@@ -28,7 +30,7 @@ export default ajax
 
 export async function dealResponse(response, toJson?: boolean) {
   await convertCodeMessage(response);
-  let {statusCode, data} = response;
+  let { statusCode, data } = response;
   if (toJson) data = JSON.parse(data);
 
   if (statusCode === 200) {
@@ -36,7 +38,7 @@ export async function dealResponse(response, toJson?: boolean) {
     if (typeof data !== 'object' || Array.isArray(data)) return data;
 
     // 后端接口没有统一规范，可能需要写多个拦截
-    if ('code' in data && ![200, '000000'].includes(data.code)) throw data;
+    if ('code' in data && ![0, 200, '000000'].includes(data.code)) throw data;
 
     return data;
   }
@@ -72,7 +74,7 @@ async function convertCodeMessage(res) {
   };
 
   const response = await ajax.post('/api/pcc/v1/common/code-international', params);
-  const {responseCode, responseMsg} = response?.data || {};
+  const { responseCode, responseMsg } = response?.data || {};
 
   res.data.code = responseCode;
   res.data.message = responseMsg;

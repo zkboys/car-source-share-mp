@@ -1,4 +1,4 @@
-import Taro, {getAccountInfoSync} from '@tarojs/taro';
+import Taro, { getAccountInfoSync } from '@tarojs/taro';
 import config from '@/config';
 import {
   getToken,
@@ -8,12 +8,11 @@ import {
   setLoginUser,
   getLoginUser,
   hasPermission,
-  isLogin
 } from '@rc-lib/mp';
 import dayjs from 'dayjs';
-import {envType} from "@/config/env-enum";
-import {ActivityType, activityTypeEnum, themeEnum} from "@/enums";
-import {JSEncrypt} from "jsencrypt";
+import { envType } from "@/config/env-enum";
+import { themeEnum } from "@/enums";
+import { JSEncrypt } from "jsencrypt";
 
 export const LOGIN_PATH = '/pages/login/index';
 export const HOME_PATH = '/pages/home/index';
@@ -22,45 +21,8 @@ export const UPLOAD_FILE_PATH = '/pages/upload-file/index';
 export const APPROVAL_SHARE_PATH = '/packages/withdraw-cash/withdraw-approve-share/index';
 export const CLEAR_LOGIN_STATUS_MESSAGE_KEY = '__clear_login_status_message__';
 
-export function getActivityType(): ActivityType {
-  // 如果未登录，默认一个活动类型，否则首页不展示内容
-  if (!isLogin()) return activityTypeEnum.WATER_REBATE;
-
-  return Taro.getStorageSync('activityType');
-}
-
-export function setActivityType(activityType: ActivityType) {
-  Taro.setStorageSync('activityType', activityType);
-}
-
-export function toHome(activityType: ActivityType = getActivityType()) {
-  const lastPath = getLastPath();
-  if (lastPath) {
-    Taro.navigateTo({url: lastPath});
-    // 用完清掉
-    clearLastPath();
-    return;
-  }
-
-  setActivityType(activityType);
-
-  // 没有选择过类型，跳转选择类型页面
-  if (!activityType) {
-    Taro.navigateTo({url: '/packages/choose-activity-type/index'});
-    return;
-  }
-
-  // 激活奖励
-  if (activityType === activityTypeEnum.ACTIVATION_REWARD) {
-    Taro.switchTab({url: '/pages/home/index'});
-    return;
-  }
-
-  // 流水返佣
-  if (activityType === activityTypeEnum.WATER_REBATE) {
-    Taro.switchTab({url: '/pages/home/index'});
-    return;
-  }
+export function toHome() {
+  Taro.switchTab({ url: '/pages/home/index' });
 }
 
 export function clearLoginStatus() {
@@ -75,7 +37,7 @@ export function clearLoginStatus() {
 export function toLoginDirectly() {
   clearLoginStatus();
 
-  Taro.navigateTo({url: LOGIN_PATH});
+  Taro.navigateTo({ url: LOGIN_PATH });
 }
 
 /**
@@ -345,7 +307,7 @@ export function completeTwoDecimalByCurrency(
   // 当前币种是否要展示小数点
   const isNoDecimal = noDecimalCurrency(currency);
   // 是否展示千分位分隔符
-  const {thousandSep} = configs || {};
+  const { thousandSep } = configs || {};
 
   if (thousandSep) {
     const digits = isNoDecimal ? 0 : 2;
@@ -365,7 +327,7 @@ export function formatNumberThousand(
 ): string | number | null | undefined {
   if (!value && value !== 0) return value;
 
-  const num = completeTwoDecimalByCurrency(value, currency, {thousandSep: true});
+  const num = completeTwoDecimalByCurrency(value, currency, { thousandSep: true });
 
   return num + ' ' + (needCurrency ? currency || '' : '');
 }
@@ -415,7 +377,7 @@ export function setStorageInviteCode(inviteCode: string) {
 }
 
 // 根据权限判断是否掩码
-export function maskCode(permissions, text, {length = 4} = {}) {
+export function maskCode(permissions, text, { length = 4 } = {}) {
   if (hasPermission(permissions)) return text;
   return Array(length).fill('*')?.join('');
 }
@@ -442,7 +404,7 @@ export const formatSourceFundPlatformTwoDimeOptions = (options: any[] = []) => {
 
   // 遍历 options，按业务类型分组
   options.forEach((item) => {
-    const {accountBalanceAvailable, businessTypeEnum} = item;
+    const { accountBalanceAvailable, businessTypeEnum } = item;
     arr[priorityMap[item.businessTypeEnum]].push({
       ...item,
       preKey: businessTypeEnum,
@@ -538,3 +500,12 @@ export const JSEncryptDefault = (val) => {
   let JSEncryptString = encrypt.encrypt(val);
   return JSEncryptString;
 };
+
+
+export function getCompanyId(): string {
+  return Taro.getStorageSync('companyId') || '359232';
+}
+
+export function setCompanyId(companyId: string) {
+  Taro.setStorageSync('companyId', companyId);
+}

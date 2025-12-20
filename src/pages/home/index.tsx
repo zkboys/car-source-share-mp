@@ -2,7 +2,7 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 import {ScrollView, Text, View} from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import {CarSource, Company, DropdownSelectItemType, DropdownValueType} from '@/types/car-source';
-import {fetchCarSourceList, fetchCompany} from '@/api/car-source';
+import {fetchCarSourceList, fetchCompany} from '@/api';
 import {CarCard, DropdownSelect, Header} from './components';
 import {PageContent} from "@rc-lib/mp";
 import s from './index.module.scss';

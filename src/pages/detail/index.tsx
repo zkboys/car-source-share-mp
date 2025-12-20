@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { View, Text, Image, Swiper, SwiperItem, ScrollView } from '@tarojs/components';
 import Taro, { useRouter } from '@tarojs/taro';
 import { CarSource } from '@/types/car-source';
-import { fetchCarSourceDetail } from '@/api/car-source';
+import { fetchCarSourceDetail } from '@/api';
 import { ContactDialog } from '../home/components/contact-dialog';
 import styles from './index.module.scss';
 
