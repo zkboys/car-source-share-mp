@@ -1,10 +1,21 @@
+.root {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: 8px;
+  background: #3689f5;
+}
+
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px 0 16px;
+  padding: 0 16px 0 16px;
   box-sizing: border-box;
   width: 100%;
+  min-height: 31px;
 }
 
 .info {
