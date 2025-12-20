@@ -88,7 +88,7 @@ export function DropdownSelect(props: DropdownSelectProps) {
             if (Array.isArray(v)) {
               return !v.includes('all') && v.length > 0;
             }
-            return v && v !== 'all';
+            return !!v && v !== 'all';
           })();
 
           return (
