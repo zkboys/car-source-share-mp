@@ -1,5 +1,6 @@
 import { View, Text, ScrollView } from '@tarojs/components';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import Taro from '@tarojs/taro';
 import { DropdownSelectItemType } from '@/types/car-source';
 import s from './index.module.scss';
 
@@ -18,6 +19,14 @@ export function DropdownSelect(props: DropdownSelectProps) {
   if (!value) value = {};
 
   const [activeKey, setActiveKey] = useState<string | null>(null);
+
+  // 计算下拉面板的 top 位置（状态栏高度 + header高度 + 筛选栏高度）
+  const dropdownTop = useMemo(() => {
+    const systemInfo = Taro.getSystemInfoSync();
+    const statusBarHeight = systemInfo.statusBarHeight || 20;
+    // header 高度约 31px + padding 8px = 39px，筛选栏高度 40px
+    return statusBarHeight + 39 + 40;
+  }, []);
 
   const handleItemClick = (itemKey: string) => {
     setActiveKey(activeKey === itemKey ? null : itemKey);
@@ -106,7 +115,11 @@ export function DropdownSelect(props: DropdownSelectProps) {
 
       {activeKey && (
         <View className={s.overlay} onClick={() => setActiveKey(null)}>
-          <View className={s.dropdown} onClick={(e) => e.stopPropagation()}>
+          <View 
+            className={s.dropdown} 
+            onClick={(e) => e.stopPropagation()}
+            style={{ top: `${dropdownTop}px` }}
+          >
             <ScrollView scrollY className={s.scroll}>
               {items
                 .find((item) => item.key === activeKey)
