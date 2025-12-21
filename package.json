@@ -17,7 +17,7 @@
     "build:analyzer": "ANALYZER=true npm run build:weapp",
     "dev:weapp": "rimraf dist && npm run build:weapp -- --watch",
     "build:weapp": "rimraf dist && taro build --type weapp",
-    "rancher": "NODE_VERSION=22 rc-deploy",
+    "rancher": "NODE_VERSION=22 GIT_URL=https://github.com/zkboys/car-source-share-mp.git rc-deploy",
     "prepare": "husky",
     "new": "taro new",
     "build:swan": "taro build --type swan",
