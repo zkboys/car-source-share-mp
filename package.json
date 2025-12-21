@@ -51,7 +51,7 @@
   "author": "",
   "dependencies": {
     "@babel/runtime": "^7.24.4",
-    "@rc-lib/enum": "^0.1.33",
+    "@rc-lib/enum": "^0.1.23",
     "@rc-lib/mp": "^1.0.32",
     "@taroify/core": "^0.9.0",
     "@tarojs/components": "4.1.5",

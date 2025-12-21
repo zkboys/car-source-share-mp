@@ -3301,10 +3301,10 @@
     sync-request "^6.1.0"
     xml2js "^0.6.2"
 
-"@rc-lib/enum@^0.1.33":
-  version "0.1.33"
-  resolved "https://npm.suixingpay.com/@rc-lib/enum/-/enum-0.1.33.tgz#c8102b87603f0935dfd7e34f8f078ca9d12776b0"
-  integrity sha512-CRz3DJXNJQ3X6xZUN/L0rSiFE46aN9WEb4CuFobutu1ksTjaQ9rvPwI/S/yqC+z79q63xE0x+OI7s6PzU3MG0w==
+"@rc-lib/enum@^0.1.23":
+  version "0.1.23"
+  resolved "https://registry.npmjs.org/@rc-lib/enum/-/enum-0.1.23.tgz#8d60eb7d90041851c8ac8386325706bb102a075b"
+  integrity sha512-XQqIsHHxJy5W6sIiorQbfzjbgXm3m5efk3/YtFWAtiTcgxipHUfbjR0R79TP0Jqq/N6n5IoUAAmE9J88RPe2Og==
 
 "@rc-lib/mp@^1.0.32":
   version "1.0.32"

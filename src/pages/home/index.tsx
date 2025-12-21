@@ -1,304 +1,41 @@
-import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import { Text, View, ScrollView } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import { CarSource, Company, DropdownSelectItemType, DropdownValueType } from '@/types/car-source';
-import { fetchCarSourceList, fetchCompany } from '@/api';
-import { CarCard, DropdownSelect, Header } from './components';
-import { PageContent } from "@rc-lib/mp";
+import {PageContent} from "@rc-lib/mp";
 import s from './index.module.scss';
-
-// 获取系统信息
-const systemInfo = Taro.getSystemInfoSync();
-const statusBarHeight = systemInfo.statusBarHeight || 20;
-
-// 提取字符串中的数字，用于价格排序
-function extractNumber(str: string): number {
-  if (!str) return 0;
-  const match = str.match(/(\d+\.?\d*)/);
-  return match && match[1] ? parseFloat(match[1]) : 0;
-}
-
-// 处理图片数据
-function processCarPhoto(carPhoto: any): string[] {
-  if (Array.isArray(carPhoto)) {
-    return carPhoto;
-  }
-  if (typeof carPhoto === 'string') {
-    return carPhoto.split(' ').filter(Boolean);
-  }
-  return [];
-}
-
-// 初始化筛选项
-const initItems: DropdownSelectItemType[] = [
-  {
-    key: 'sorter',
-    title: '排序',
-    children: [
-      { key: 'all', title: '默认排序' },
-      { key: 'desc', title: '价格最高' },
-      { key: 'asc', title: '价格最低' },
-    ],
-  },
-  {
-    key: 'brand',
-    title: '品牌',
-    multiple: true,
-    children: [{ key: 'all', title: '全部品牌' }],
-  },
-  {
-    key: 'source',
-    title: '车源',
-    multiple: true,
-    children: [{ key: 'all', title: '全部车源' }],
-  },
-  {
-    key: 'deliveryType',
-    title: '提车类型',
-    multiple: true,
-    children: [{ key: 'all', title: '全部类型' }],
-  },
-];
+import {View} from "@tarojs/components";
+import Taro from "@tarojs/taro";
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
-  const [company, setCompany] = useState<Company>();
-  const [originDataSource, setOriginDataSource] = useState<CarSource[]>([]);
-  const [dataSource, setDataSource] = useState<CarSource[]>([]);
-  const [items, setItems] = useState<DropdownSelectItemType[]>(initItems);
-  const [dropdownValue, setDropdownValue] = useState<DropdownValueType>({
-    sorter: 'all',
-    brand: ['all'],
-    source: ['all'],
-    deliveryType: ['all'],
-  });
 
-  // 获取顶层查询条件项
-  const getItems = useCallback((data: CarSource[]) => {
-    const brandList: string[] = [];
-    const sourceList: string[] = [];
-    const deliveryTypeList: string[] = [];
-
-    data.forEach((item) => {
-      const { brand, deliveryCity, deliveryType } = item;
-      if (brand && !brandList.includes(brand)) {
-        brandList.push(brand);
-      }
-      if (deliveryCity && !sourceList.includes(deliveryCity)) {
-        sourceList.push(deliveryCity);
-      }
-      if (deliveryType && !deliveryTypeList.includes(deliveryType)) {
-        deliveryTypeList.push(deliveryType);
-      }
-    });
-
-    setItems((prevItems) => {
-      const newItems = [...prevItems];
-      const brandItems = newItems.find((it) => it.key === 'brand')!;
-      const sourceItems = newItems.find((it) => it.key === 'source')!;
-      const deliveryTypeItems = newItems.find((it) => it.key === 'deliveryType')!;
-
-      brandItems.children = [
-        { key: 'all', title: '全部品牌' },
-        ...brandList.map((b) => ({ key: b, title: b })),
-      ];
-
-      sourceItems.children = [
-        { key: 'all', title: '全部车源' },
-        ...sourceList.map((s) => ({ key: s, title: s })),
-      ];
-
-      deliveryTypeItems.children = [
-        { key: 'all', title: '全部类型' },
-        ...deliveryTypeList.map((s) => ({ key: s, title: s })),
-      ];
-
-      return newItems;
-    });
-  }, []);
-
-  // 基于查询条件过滤数据
-  useEffect(() => {
-    const { sorter, brand, source, deliveryType } = dropdownValue;
-
-    const nextDataSource = originDataSource.filter((item: CarSource) => {
-      const isBrand = brand.includes('all')
-        ? true
-        : brand.some((key: string) => item.brand === key);
-      const isSource = source.includes('all')
-        ? true
-        : source.some((key: string) => item.deliveryCity === key);
-      const isDeliveryType = deliveryType.includes('all')
-        ? true
-        : deliveryType.some((key: string) => item.deliveryType === key);
-
-      return isBrand && isSource && isDeliveryType;
-    });
-
-    nextDataSource.sort((a, b) => {
-      const aTime = a.createTime || '';
-      const bTime = b.createTime || '';
-      const aPrice = extractNumber(a.exportPrice);
-      const bPrice = extractNumber(b.exportPrice);
-
-      if (sorter === 'all') {
-        if (bTime > aTime) return 1;
-        if (bTime < aTime) return -1;
-        return 0;
-      }
-      if (sorter === 'desc') {
-        return bPrice - aPrice;
-      }
-      if (sorter === 'asc') {
-        return aPrice - bPrice;
-      }
-      return 0;
-    });
-
-    setDataSource(nextDataSource);
-  }, [dropdownValue, originDataSource]);
-
-  // 初始化查询数据
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        Taro.showLoading({ title: '加载中...' });
-
-        const [companyData, carList] = await Promise.all([
-          fetchCompany({ withLoading: false }),
-          fetchCarSourceList({ withLoading: false }),
-        ]);
-
-        setCompany(companyData);
-
-        const processedData = (carList || []).map((item: any) => ({
-          ...item,
-          carPhoto: processCarPhoto(item.carPhoto),
-        }));
-
-        setOriginDataSource(processedData);
-        getItems(processedData);
-      } catch (error) {
-        console.error('加载数据失败:', error);
-        Taro.showToast({ title: '加载失败', icon: 'error' });
-      } finally {
-        setLoading(false);
-        Taro.hideLoading();
-      }
-    };
-
-    loadData();
-  }, [getItems]);
-
-  // 图片点击预览
-  const handleImageClick = useCallback((images: string[], index: number) => {
-    Taro.previewImage({
-      urls: images,
-      current: images[index],
-    });
-  }, []);
-
-  // 计算顶部高度（状态栏 + header + 筛选栏）
-  const topHeight = useMemo(() => {
-    // 状态栏高度 + header高度(约36px) + 筛选栏高度(40px)
-    return statusBarHeight + 36 + 40;
-  }, []);
-
-  // 计算可视区域高度
-  const screenHeight = useMemo(() => {
-    const systemInfo = Taro.getSystemInfoSync();
-    return systemInfo.windowHeight || 667;
-  }, []);
-
-  // 虚拟滚动相关状态
-  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 10 });
-  const scrollTopRef = useRef(0);
-  const itemHeight = 200; // 每个卡片的大概高度
-  const overscan = 3; // 预渲染的额外项数
-
-  // 计算可见范围
-  const calculateVisibleRange = useCallback((scrollTop: number) => {
-    const containerHeight = screenHeight - topHeight - 8;
-    const start = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
-    const visibleCount = Math.ceil(containerHeight / itemHeight);
-    const end = Math.min(dataSource.length, start + visibleCount + overscan * 2);
-    setVisibleRange({ start, end });
-  }, [screenHeight, topHeight, dataSource.length]);
-
-  // 处理滚动事件
-  const handleScroll = useCallback((e: any) => {
-    const scrollTop = e.detail.scrollTop;
-    scrollTopRef.current = scrollTop;
-    calculateVisibleRange(scrollTop);
-  }, [calculateVisibleRange]);
-
-  // 初始化可见范围
-  useEffect(() => {
-    calculateVisibleRange(0);
-  }, [calculateVisibleRange, dataSource.length]);
-
-  // 获取可见的列表项
-  const visibleItems = useMemo(() => {
-    return dataSource.slice(visibleRange.start, visibleRange.end);
-  }, [dataSource, visibleRange]);
-
-  // 计算顶部占位高度
-  const topPlaceholderHeight = visibleRange.start * itemHeight;
-  
-  // 计算底部占位高度
-  const bottomPlaceholderHeight = (dataSource.length - visibleRange.end) * itemHeight;
+  const items = [
+    {
+      id: '359232',
+      title: '卡泰驰',
+      subTitle: '海尔集团旗下的汽车产业互联网平台',
+      desc: '卡泰驰是海尔卡奥斯做深做专汽车工业互联网的具体平台和载体，通过三大业务布局，为用户提供定制化、标准化、生态化的场景解决方案',
+    }
+  ];
 
   return (
-    <PageContent className={s.carHome}>
-      <Header company={company} >
-        <View className={s.top}>
-          <DropdownSelect
-            value={dropdownValue}
-            onChange={(value) => setDropdownValue(value as DropdownValueType)}
-            items={items}
-          />
-        </View>
-      </Header>
+    <PageContent
+      header="车源分享"
+      className={s.root}
+    >
+      {items.map(item => {
+        const {id, title, subTitle, desc} = item;
 
-      <ScrollView
-        className={s.content}
-        style={{ 
-          paddingTop: `${topHeight + 8}px`,
-          height: `${screenHeight - topHeight - 8}px`
-        }}
-        scrollY
-        enhanced
-        showScrollbar={false}
-        onScroll={handleScroll}
-      >
-        {!loading && dataSource.length === 0 ? (
-          <View className={s.empty}>
-            <Text className={s.emptyText}>暂无数据</Text>
-            <Text className={s.emptyTip}>更换筛选条件试试</Text>
+        const handleClick = async () => {
+          await Taro.navigateTo({url: `/pages/webview/index?id=${id}`});
+        };
+
+        return (
+          <View key={id} className={s.item} onClick={handleClick}>
+            <View className={s.title}>
+              {title}
+              <View className={s.subTitle}>{subTitle}</View>
+            </View>
+            <View className={s.desc}>{desc}</View>
           </View>
-        ) : (
-          <View>
-            {/* 顶部占位 */}
-            {topPlaceholderHeight > 0 && (
-              <View style={{ height: `${topPlaceholderHeight}px` }} />
-            )}
-            {/* 可见的列表项 */}
-            {visibleItems.map((item) => (
-              <View key={item.id} style={{ marginBottom: '8px', padding: '0 8px' }}>
-                <CarCard
-                  data={item}
-                  onImageClick={handleImageClick}
-                />
-              </View>
-            ))}
-            {/* 底部占位 */}
-            {bottomPlaceholderHeight > 0 && (
-              <View style={{ height: `${bottomPlaceholderHeight}px` }} />
-            )}
-          </View>
-        )}
-      </ScrollView>
+        );
+      })}
     </PageContent>
   );
 }
