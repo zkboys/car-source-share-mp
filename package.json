@@ -1,9 +1,9 @@
 {
-  "title": "代理商小程序",
-  "name": "cogo-agent-mp",
+  "title": "车源分享",
+  "name": "car-source-share-mp",
   "version": "1.0.0",
   "private": true,
-  "description": "代理商小程序",
+  "description": "车源分享",
   "templateInfo": {
     "name": "default",
     "typescript": true,
