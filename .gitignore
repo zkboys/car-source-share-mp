@@ -12,3 +12,6 @@ node_modules/
 project.private.config.json
 
 .claude
+
+# 部署相关敏感文件
+deploy/private.key
